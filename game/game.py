@@ -31,6 +31,10 @@ class Board:
         return self._game.n_player
 
     @property
+    def players(self) -> Iterable[int]:
+        return self._game.players
+
+    @property
     def n_round(self) -> int:
         return self._game.n_round
 
@@ -68,6 +72,24 @@ class Board:
             if self.cur_round_plays[i] is None:
                 return i
         return None
+
+    @property
+    def cur_leading_suit(self) -> Optional[Suit]:
+        for i in self.cur_round_play_order:
+            play = self.cur_round_plays[i]
+            if play is None:
+                return None
+            elif play.suit is not None:
+                return play.suit
+        return None
+
+    def can_play_suit(self, suit: Optional[Suit], hand: Set[Card]) -> bool:
+        if suit is None:
+            return True
+        leading_suit = self.cur_leading_suit
+        if leading_suit is None or all(card.suit != leading_suit for card in hand):
+            return True
+        return suit == leading_suit
 
     @property
     def is_round_play_finished(self) -> bool:
@@ -124,6 +146,7 @@ class StandardGame:
         value_check(self.board.predictions is not None, f'Predictions have not been set')
         value_check(player == self.board.cur_player, f'Wrong player {player} (current player is {self.board.cur_player})')
         value_check(card in self.remained_hands[player], f'Card {card} is not in remained hand of player {player}')
+        value_check(self.board.can_play_suit(card.suit, self.remained_hands[player]), f'Player {player} should play a {self.board.cur_leading_suit} card')
 
         assert self.board.cur_round_plays[player] is None
         self.board.cur_round_plays[player] = card
