@@ -93,8 +93,8 @@ class StandardGame:
 
         # shuffle and make hands
         shuffled_cards = all_suit_cards.copy()
-        shuffled_cards += [WizardCard() for i in range(n_wizard)]
-        shuffled_cards += [JesterCard() for i in range(n_jester)]
+        shuffled_cards += [WizardCard(i) for i in range(n_wizard)]
+        shuffled_cards += [JesterCard(i) for i in range(n_jester)]
         random.shuffle(shuffled_cards)
         self.n_round = n_round or (len(shuffled_cards) - 1) // n_player
 
