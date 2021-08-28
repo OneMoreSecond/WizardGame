@@ -1,6 +1,6 @@
 import random
-from typing import List, Set
-from typing import Optional, Iterable
+import typing
+from typing import List, Set, Optional, Iterable
 
 from .card import *
 from helper import value_check
@@ -130,7 +130,7 @@ class StandardGame:
         self.remained_hands[player].remove(card)
 
         if self.board.is_round_play_finished:
-            winner = self._get_winner(self.board.cur_round_play_order, self.board.cur_round_plays)
+            winner = self._get_winner(self.board.cur_round_play_order, typing.cast(List[Card], self.board.cur_round_plays))
             self.board._next_round(leader=winner)
 
     def _get_winner(self, play_order: List[int], plays: List[Card]) -> int:
@@ -143,17 +143,19 @@ class StandardGame:
 
         winner = play_order[0]
         for i in play_order[1:]:
-            if isinstance(plays[winner], JesterCard):
+            cur_card = plays[i]
+            winner_card = plays[winner]
+            if isinstance(winner_card, JesterCard):
                 winner = i
                 continue
-            assert isinstance(plays[winner], SuitCard)
-            if isinstance(plays[i], JesterCard):
+            assert isinstance(winner_card, SuitCard)
+            if isinstance(cur_card, JesterCard):
                 continue
-            assert isinstance(plays[i], SuitCard)
-            if plays[i].suit == plays[winner].suit:
-                if plays[i].standard_rank_index > plays[winner].standard_rank_index:
+            assert isinstance(cur_card, SuitCard)
+            if cur_card.suit == winner_card.suit:
+                if cur_card.standard_rank_index > winner_card.standard_rank_index:
                     winner = i
-            elif plays[i].suit == self.trump:
+            elif cur_card.suit == self.trump:
                 winner = i
         return winner
 
