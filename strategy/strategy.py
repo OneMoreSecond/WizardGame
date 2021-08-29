@@ -1,7 +1,7 @@
 from typing import Set
 from abc import ABC, abstractmethod
 
-from game import *
+from game import Card, Board
 
 __all__ = [
     'Strategy'

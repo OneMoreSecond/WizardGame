@@ -1,8 +1,8 @@
 from typing import Set, List
 
-from game import *
+from game import Card, Board
 from helper import value_check
-from .strategy import *
+from .strategy import Strategy
 
 __all__ = [
     'HumanStrategy'

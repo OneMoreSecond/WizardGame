@@ -2,7 +2,7 @@ import random
 import typing
 from typing import List, Set, Optional, Iterable
 
-from .card import *
+from .card import Suit, Card, SuitCard, WizardCard, JesterCard, all_suit_cards
 from helper import value_check
 
 __all__ = [
