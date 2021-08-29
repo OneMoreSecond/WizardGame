@@ -96,8 +96,8 @@ class HumanStrategy(Strategy):
             card_name_str = input('Enter the card to play: ')
             try:
                 play = Card.parse(card_name_str)
-            except ValueError:
-                print('[Error] Not a valid card')
+            except ValueError as e:
+                print(f'[Error] {e.args[0]}')
                 continue
             if play not in self.hand:
                 print('[Error] Not in your hand')

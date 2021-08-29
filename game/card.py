@@ -73,6 +73,7 @@ class SuitCard(Card):
 
     @classmethod
     def register_parse_mapping(cls, name: str, card: Card):
+        value_check(name not in cls._parse_mapping, f'Name {name} has been registered')
         cls._parse_mapping[name] = card
 
     @classmethod
@@ -83,12 +84,12 @@ class SuitCard(Card):
 
 all_suit_cards = []
 for suit in Suit:
-    suit_prefixes = map(''.join, itertools.product([suit.name, suit.name.lower()], ['', ' ']))
+    suit_prefixes = list(map(''.join, itertools.product([suit.name, suit.name.lower()], ['', ' '])))
     for rank in standard_ranks:
         card = SuitCard(suit, rank)
         all_suit_cards.append(card)
         for suit_prefix in suit_prefixes:
-            SuitCard.register_parse_mapping(suit_prefix + card.rank, card)
+            SuitCard.register_parse_mapping(suit_prefix + rank, card)
 
 
 class SpecialCard(Card, ABC):
