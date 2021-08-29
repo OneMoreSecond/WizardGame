@@ -27,9 +27,13 @@ def main(args):
 
     scores = game.score()
     print_separator()
+    game.board.print()
+    print()
     print('Scores:')
     for i, score in enumerate(scores):
         print(f'Player {i}: {score}')
+    print()
+    print('Game ended')
 
 
 if __name__ == '__main__':
