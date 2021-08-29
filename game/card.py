@@ -23,6 +23,10 @@ class Suit(enum.Enum):
     Diamond = enum.auto()
     Club = enum.auto()
 
+    # pylint: disable=invalid-str-returned
+    def __str__(self) -> str:
+        return self.name
+
 
 class Card(ABC):
     @abstractmethod
@@ -67,7 +71,7 @@ class SuitCard(Card):
         return self._suit
 
     def __repr__(self) -> str:
-        return f'{self.suit.name} {self.rank}'
+        return f'{self.suit} {self.rank}'
 
     _parse_mapping: Dict[str, Card] = {}
 
@@ -102,10 +106,10 @@ class SpecialCard(Card, ABC):
     @classmethod
     def parse(cls, name: str) -> Card:
         try:
-        card_type = cls._card_type().lower()
-        value_check(name.lower().startswith(card_type), f'Invalid card name {name}')
-        idx = int(name[len(card_type):])
-        return cls(idx)
+            card_type = cls._card_type().lower()
+            value_check(name.lower().startswith(card_type), f'Invalid card name {name}')
+            idx = int(name[len(card_type):])
+            return cls(idx)
         except ValueError:
             for subclass in cls.__subclasses__():
                 try:
