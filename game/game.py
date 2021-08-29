@@ -104,6 +104,33 @@ class Board:
         assert self.n_finished_round <= self._game.n_round
         return self.n_finished_round == self._game.n_round
 
+    def print(self):
+        print('Board:')
+        print()
+        print(f'Trump is {self.trump}')
+        print()
+        print('(L after a card means the player is the round leader)')
+        print('(W after a card means the player is the round winner)')
+        print()
+
+        def print_row(cells: List[str]):
+            column_width = 20
+            print(''.join(cell.ljust(column_width) for cell in cells))
+
+        winned_rounds = self.winned_rounds()
+        assert self.predictions is not None
+        print_row([''] + [f'Player{player}' for player in self.players])
+        print_row(['Progress'] + [f'{winned_rounds[player]}/{self.predictions[player]}' for player in self.players])
+
+        for r, (leader, plays) in enumerate(zip(self.round_leaders, self.plays)):
+            if r == self.cur_round:
+                print()
+            card_names = list(map(str, plays))
+            card_names[leader] += '(L)'
+            if r < self.n_finished_round:
+                card_names[self.round_winners[r]] += '(W)'
+            print_row([f'Round {r}'] + card_names)
+
 
 class StandardGame:
     def __init__(self, n_player: int = 4, n_wizard: int = 4, n_jester: int = 4, n_round: Optional[int] = None):
@@ -113,7 +140,6 @@ class StandardGame:
         value_check(n_round is None or n_round > 0, 'n_round should be positive')
 
         self.n_player = n_player
-        self.board = Board(self)
 
         # shuffle and make hands
         shuffled_cards = all_suit_cards.copy()
@@ -131,6 +157,8 @@ class StandardGame:
         # decide trump
         remained_cards = shuffled_cards[self.n_round * n_player:]
         self.trump = remained_cards[0].suit if len(remained_cards) > 0 else None
+
+        self.board = Board(self)
 
     @property
     def players(self) -> Iterable[int]:

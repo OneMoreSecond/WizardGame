@@ -55,31 +55,6 @@ class HumanStrategy(Strategy):
         for key, row in rows.items():
             print(key.ljust(15), ' '.join(row) or None)
 
-    @staticmethod
-    def _print_board(board: Board):
-        print('Board:')
-        print('(L after a card means the player is the round leader)')
-        print('(W after a card means the player is the round winner)')
-        print()
-
-        def print_row(cells: List[str]):
-            column_width = 20
-            print(''.join(cell.ljust(column_width) for cell in cells))
-
-        winned_rounds = board.winned_rounds()
-        assert board.predictions is not None
-        print_row([''] + [f'Player{player}' for player in board.players])
-        print_row(['Progress'] + [f'{winned_rounds[player]}/{board.predictions[player]}' for player in board.players])
-
-        for r, (leader, plays) in enumerate(zip(board.round_leaders, board.plays)):
-            if r == board.cur_round:
-                print()
-            card_names = list(map(str, plays))
-            card_names[leader] += '(L)'
-            if r < board.n_finished_round:
-                card_names[board.round_winners[r]] += '(W)'
-            print_row([f'Round {r}'] + card_names)
-
     @property
     def prediction(self) -> int:
         return self._prediction
@@ -90,7 +65,7 @@ class HumanStrategy(Strategy):
         assert(self.player == board.cur_player)
 
         print_separator()
-        self._print_board(board)
+        board.print()
         print()
         self._print_hand(board.trump)
         print_separator()
