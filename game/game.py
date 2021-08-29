@@ -154,6 +154,7 @@ class StandardGame:
 
         if self.board.is_round_play_finished:
             winner = self._get_winner(self.board.cur_round_play_order, typing.cast(List[Card], self.board.cur_round_plays))
+            # pylint: disable=protected-access
             self.board._next_round(leader=winner)
 
     def _get_winner(self, play_order: List[int], plays: List[Card]) -> int:
