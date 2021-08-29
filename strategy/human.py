@@ -71,6 +71,8 @@ class HumanStrategy(Strategy):
         print_row(['Progress'] + [f'{winned_rounds[player]}/{board.predictions[player]}' for player in board.players])
 
         for r, (leader, plays) in enumerate(zip(board.round_leaders, board.plays)):
+            if r == board.cur_round:
+                print()
             card_names = list(map(str, plays))
             card_names[leader] += '(L)'
             if r < len(board.round_winners):
