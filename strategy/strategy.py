@@ -1,4 +1,3 @@
-from typing import Set
 from abc import ABC, abstractmethod
 
 from game import Card, Board
@@ -9,10 +8,15 @@ __all__ = [
 
 
 class Strategy(ABC):
+    @property
     @abstractmethod
-    def predict(self, hand: Set[Card]) -> int:
+    def prediction(self) -> int:
         raise NotImplementedError
 
     @abstractmethod
     def play(self, board: Board) -> Card:
         raise NotImplementedError
+
+    @classmethod
+    def strategy_type(cls) -> str:
+        return cls.__name__[:-len('Strategy')]
