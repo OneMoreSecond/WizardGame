@@ -20,9 +20,10 @@ def main(args):
     game.predict(predictions)
 
     while not game.board.is_all_finished:
-        while game.board.cur_player is not None:
-            play = agents[game.board.cur_player].play(game.board)
-            game.play(game.board.cur_player, play)
+        assert game.board.cur_round < game.n_round
+        assert game.board.cur_player is not None
+        play = agents[game.board.cur_player].play(game.board)
+        game.play(game.board.cur_player, play)
 
     scores = game.score()
     print_separator()

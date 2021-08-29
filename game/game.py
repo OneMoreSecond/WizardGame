@@ -24,7 +24,8 @@ class Board:
     def _next_round(self, leader: int):
         assert leader < self.n_player
         self.round_leaders.append(leader)
-        self.plays.append([None] * self.n_player)
+        if not self.is_all_finished:
+            self.plays.append([None] * self.n_player)
 
     @property
     def n_player(self) -> int:
@@ -100,7 +101,8 @@ class Board:
 
     @property
     def is_all_finished(self) -> bool:
-        return self.predictions is not None and self.n_finished_round == self._game.n_round
+        assert self.n_finished_round <= self._game.n_round
+        return self.n_finished_round == self._game.n_round
 
 
 class StandardGame:
