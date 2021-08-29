@@ -76,7 +76,7 @@ class HumanStrategy(Strategy):
                 print()
             card_names = list(map(str, plays))
             card_names[leader] += '(L)'
-            if r < len(board.round_winners):
+            if r < board.n_finished_round:
                 card_names[board.round_winners[r]] += '(W)'
             print_row([f'Round {r}'] + card_names)
 
