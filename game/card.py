@@ -101,10 +101,18 @@ class SpecialCard(Card, ABC):
 
     @classmethod
     def parse(cls, name: str) -> Card:
+        try:
         card_type = cls._card_type().lower()
         value_check(name.lower().startswith(card_type), f'Invalid card name {name}')
         idx = int(name[len(card_type):])
         return cls(idx)
+        except ValueError:
+            for subclass in cls.__subclasses__():
+                try:
+                    return subclass.parse(name)
+                except ValueError:
+                    pass
+            raise ValueError(f'invalid card name {name}')
 
 
 class WizardCard(SpecialCard):
