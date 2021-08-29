@@ -37,7 +37,8 @@ class HumanStrategy(Strategy):
         print(f'Trump: {trump and trump.name}')
         print()
         print('Your hand:')
-        print('(T after a suit means the suit is the trump)')
+        if trump is not None:
+            print('(T after a suit means the suit is the trump)')
         print()
         rows: Dict[str, List[str]] = {}
         rows['Special'] = sorted(str(card) for card in self.hand if card.suit is None)
