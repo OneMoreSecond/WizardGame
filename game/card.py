@@ -53,7 +53,7 @@ class Card(ABC):
         raise ValueError(f'invalid card name {name}')
 
 
-standard_ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'K', 'Q', 'A']
+standard_ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
 
 class SuitCard(Card):
