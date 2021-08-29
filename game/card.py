@@ -1,7 +1,7 @@
 import enum
 import itertools
 from typing import Optional, Dict
-from abc import ABC, ABCMeta, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 
 from helper import value_check
 
@@ -29,12 +29,15 @@ class Card(ABC):
     def __repr__(self) -> str:
         raise NotImplementedError
 
-    @abstractproperty
+    @property
     def suit(self) -> Optional[Suit]:
         return None
 
     def __eq__(self, other: 'Card') -> bool:
         return repr(self) == repr(other)
+
+    def __hash__(self) -> int:
+        return hash(repr(self))
 
     @classmethod
     def _card_type(cls) -> str:
@@ -63,14 +66,13 @@ class SuitCard(Card):
     def suit(self) -> Suit:
         return self._suit
 
-    @property
     def __repr__(self) -> str:
         return f'{self.suit.name} {self.rank}'
 
     _parse_mapping: Dict[str, Card] = {}
 
     @classmethod
-    def register_parse_mapping(cls, name:str, card: Card):
+    def register_parse_mapping(cls, name: str, card: Card):
         cls._parse_mapping[name] = card
 
     @classmethod
@@ -89,7 +91,7 @@ for suit in Suit:
             SuitCard.register_parse_mapping(suit_prefix + card.rank, card)
 
 
-class SpecialCard(Card, metaclass=ABCMeta):
+class SpecialCard(Card, ABC):
     def __init__(self, idx: int):
         self.idx = idx
 
@@ -105,10 +107,8 @@ class SpecialCard(Card, metaclass=ABCMeta):
 
 
 class WizardCard(SpecialCard):
-    def __init__(self, idx: int):
-        super().__init__(idx)
+    pass
 
 
 class JesterCard(SpecialCard):
-    def __init__(self, idx: int):
-        super().__init__(idx)
+    pass

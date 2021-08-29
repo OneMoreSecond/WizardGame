@@ -2,8 +2,8 @@ import random
 import typing
 from typing import List, Set, Optional, Iterable
 
-from .card import Suit, Card, SuitCard, WizardCard, JesterCard, all_suit_cards
 from helper import value_check
+from .card import Suit, Card, SuitCard, WizardCard, JesterCard, all_suit_cards
 
 __all__ = [
     'Board',
@@ -105,10 +105,10 @@ class Board:
 
 class StandardGame:
     def __init__(self, n_player: int = 4, n_wizard: int = 4, n_jester: int = 4, n_round: Optional[int] = None):
-        value_check(n_player > 0, f'n_player should be positive')
-        value_check(n_wizard > 0, f'n_wizard should be positive')
-        value_check(n_jester > 0, f'n_jester should be positive')
-        value_check(n_round is None or n_round > 0, f'n_round should be positive')
+        value_check(n_player > 0, 'n_player should be positive')
+        value_check(n_wizard > 0, 'n_wizard should be positive')
+        value_check(n_jester > 0, 'n_jester should be positive')
+        value_check(n_round is None or n_round > 0, 'n_round should be positive')
 
         self.n_player = n_player
         self.board = Board(self)
@@ -135,7 +135,7 @@ class StandardGame:
         return range(self.n_player)
 
     def predict(self, predictions: List[int]):
-        value_check(self.board.predictions is None, f'Predictions have been set')
+        value_check(self.board.predictions is None, 'Predictions have been set')
         value_check(len(predictions) == self.n_player, f'Wrong player count {len(predictions)} (expected {self.n_player})')
         for player, prediction in enumerate(predictions):
             value_check(prediction >= 0, f'prediction of player {player} should be non-negative')
@@ -143,7 +143,7 @@ class StandardGame:
         self.board.predictions = predictions
 
     def play(self, player: int, card: Card):
-        value_check(self.board.predictions is not None, f'Predictions have not been set')
+        value_check(self.board.predictions is not None, 'Predictions have not been set')
         value_check(player == self.board.cur_player, f'Wrong player {player} (current player is {self.board.cur_player})')
         value_check(card in self.remained_hands[player], f'Card {card} is not in remained hand of player {player}')
         value_check(self.board.can_play_suit(card.suit, self.remained_hands[player]), f'Player {player} should play a {self.board.cur_leading_suit} card')
