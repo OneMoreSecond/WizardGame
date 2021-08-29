@@ -5,4 +5,4 @@ __all__ = [
 
 def value_check(assertion, error_msg):
     if not assertion:
-        raise error_msg
+        raise ValueError(error_msg)
